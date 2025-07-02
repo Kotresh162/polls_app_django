@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# If using Django's collectstatic
+/static/
+
+# Environment variables
+.env
+*.env
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*.so
+
+# Virtual environment
+env/
+venv/
+ENV/
+VENV/
+.venv/
+
+# Migrations (optional - depends on your team workflow)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+# Uncomment the next line if you don't want to track migration files
+# **/migrations/
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+htmlcov/
+.coverage
+.cache
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# pip tools
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Node (if using frontend tools like React/Vue inside Django)
+node_modules/
