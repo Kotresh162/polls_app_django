@@ -2,9 +2,11 @@ from django.shortcuts import get_object_or_404
 from api.serializers import ProductSerializer,OrderSerilizer,ProductInfoSerializes
 from api.models import Product,Order,OrderItem
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Max
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 # @api_view(['GET'])
 # def product_list(request):
@@ -12,7 +14,7 @@ from rest_framework import generics
 #     serializer = ProductSerializer(products,many=True)
 #     return Response(serializer.data)
 
-class ProductListApi(generics.ListCreateAPIView):
+class ProductListCreateApi(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class  = ProductSerializer
 
@@ -39,16 +41,27 @@ class OrderListApi(generics.ListCreateAPIView):
 class UserOrderListApi(generics.ListCreateAPIView):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class  = OrderSerilizer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(user = self.request.user)
 
-@api_view(['GET'])
-def product_info(request):
-    products = Product.objects.all()
-    serializer = ProductInfoSerializes({
-        'products' : products,
-        'count' : len(products),
-        'max_price' : products.aggregate(max_price=Max('price'))['max_price']
-    })
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def product_info(request):
+#     products = Product.objects.all()
+#     serializer = ProductInfoSerializes({
+#         'products' : products,
+#         'count' : len(products),
+#         'max_price' : products.aggregate(max_price=Max('price'))['max_price']
+#     })
+#     return Response(serializer.data)
+class ProductInfoApiView(APIView):
+    def get(self,request):
+        products = Product.objects.all()
+        serializer = ProductInfoSerializes({
+            'products' : products,
+            'count' : len(products),
+            'max_price' : products.aggregate(max_price=Max('price'))['max_price']
+        })
+        return Response(serializer.data)
+
